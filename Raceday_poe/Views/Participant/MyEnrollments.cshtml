@@ -1,0 +1,89 @@
+@model IEnumerable<Raceday_poe.Models.EnrollmentModel>
+
+@{
+    ViewData["Title"] = "My Enrollments";
+}
+
+<style>
+    .page-title {
+        font-weight: 800;
+        color: #1d3557;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 25px;
+    }
+
+    .enroll-table {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .enroll-table thead {
+        background: #1d3557;
+        color: #fff;
+    }
+
+    .enroll-table th, .enroll-table td {
+        padding: 13px 16px;
+        vertical-align: middle;
+    }
+
+    .badge-confirmed { background: #d4edda; color: #155724; padding: 4px 10px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; }
+    .badge-pending { background: #fff3cd; color: #856404; padding: 4px 10px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; }
+    .badge-other { background: #e2e3e5; color: #383d41; padding: 4px 10px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; }
+</style>
+
+<h1 class="page-title">📋 My Enrollments</h1>
+
+@if (!Model.Any())
+{
+    <div style="text-align:center;padding:60px 20px;color:#888;">
+        <div style="font-size:3rem;margin-bottom:15px;">📭</div>
+        <h4>No enrollments yet</h4>
+        <p>Browse events and enrol to get started.</p>
+        <a asp-action="ParticipantHome" style="background:#e63946;color:#fff;padding:10px 22px;border-radius:20px;text-decoration:none;font-weight:600;">Browse Events</a>
+    </div>
+}
+else
+{
+    <div class="table-responsive enroll-table">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Event</th>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.enrollmentId</td>
+                        <td><strong>@item.eventName</strong></td>
+                        <td>@item.eventDate.ToString("dd MMM yyyy")</td>
+                        <td>@item.categoryName</td>
+                        <td>
+                            @if (item.Enrollmentstatus == "Registered")
+                            {
+                                <span class="badge-confirmed">Confirmed</span>
+                            }
+                            else if (item.Enrollmentstatus == "Pending")
+                            {
+                                <span class="badge-pending">Pending</span>
+                            }
+                            else
+                            {
+                                <span class="badge-other">@item.Enrollmentstatus</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

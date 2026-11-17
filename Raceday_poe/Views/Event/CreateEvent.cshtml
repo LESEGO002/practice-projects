@@ -1,0 +1,167 @@
+﻿@model Raceday_poe.Models.EventModel
+
+@{
+    ViewData["Title"] = "Create Event";
+}
+
+<style>
+    .form-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        padding: 35px;
+        max-width: 800px;
+        margin: 0 auto;
+        border-top: 5px solid #e63946;
+    }
+
+        .form-card h2 {
+            font-weight: 800;
+            color: #1d3557;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        .form-card .form-label {
+            font-weight: 600;
+            color: #1d3557;
+            font-size: 0.9rem;
+        }
+
+        .form-card .form-control, .form-card .form-select {
+            border-radius: 8px;
+            padding: 10px 14px;
+            border: 1.5px solid #d0d7de;
+        }
+
+            .form-card .form-control:focus, .form-card .form-select:focus {
+                border-color: #e63946;
+                box-shadow: 0 0 0 0.2rem rgba(230,57,70,0.15);
+            }
+
+    .btn-race {
+        background: #e63946;
+        color: #fff;
+        font-weight: 700;
+        border: none;
+        border-radius: 8px;
+        padding: 11px 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+        .btn-race:hover {
+            background: #c1121f;
+            color: #fff;
+        }
+
+    .btn-cancel {
+        color: #555;
+        text-decoration: none;
+        margin-left: 15px;
+        font-weight: 600;
+    }
+
+        .btn-cancel:hover {
+            color: #e63946;
+        }
+</style>
+
+<div class="form-card">
+    <h2>Create New Event</h2>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Message</div>
+    }
+
+    <form asp-action="CreateEvent" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="row">
+            <div class="col-md-8 mb-3">
+                <label asp-for="EventName" class="form-label">Event Name</label>
+                <select asp-for="EventName" class="form-control">
+                    <option value="">-- Select Event --</option>
+                    <option value="Open_Circuit_TrackDay">Open Circuit Track Day</option>
+                    <option value="Cars_vs_BikesTrackDay">Cars vs Bikes Track Day</option>
+                    <option value="National_CircuitRace_Meeting">National Circuit Race Meeting</option>
+                    <option value="Gauteng_DriftDay">Gauteng Drift Day</option>
+                    <option value="Motorcycle_TrackDay">Motorcycle Track Day</option>
+                    <option value="Open_PracticeSession">Open Practice Session</option>
+                    <option value="Classic_MotorsportFestival">Classic Motorsport Festival</option>
+                    <option value="Ladies_onTrack">Ladies on Track</option>
+                </select>
+                <span asp-validation-for="EventName" class="text-danger small"></span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="categoryName" class="form-label">Category Name</label>
+                <input asp-for="categoryName" class="form-control" placeholder="e.g. TrackDay" />
+                <span asp-validation-for="categoryName" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Eventdescription" class="form-label">Description</label>
+            <textarea asp-for="Eventdescription" class="form-control" rows="3" placeholder="Short description..."></textarea>
+            <span asp-validation-for="Eventdescription" class="text-danger small"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="EventDate" class="form-label">Event Date</label>
+                <input asp-for="EventDate" class="form-control" type="date" />
+                <span asp-validation-for="EventDate" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="EventLocation" class="form-label">Location</label>
+                <select asp-for="EventLocation" class="form-control">
+                    <option value="">-- Select Location --</option>
+                    <option value="Johannesburg">Johannesburg</option>
+                    <option value="Pretoria">Pretoria</option>
+                    <option value="CapeTown">Cape Town</option>
+                    <option value="Durban">Durban</option>
+                    <option value="Bloemfontein">Bloemfontein</option>
+                    <option value="Polokwane">Polokwane</option>
+                    <option value="Mbombela">Mbombela</option>
+                    <option value="Rustenburg">Rustenburg</option>
+                    <option value="Kimberley">Kimberley</option>
+                    <option value="Carletonville">Carletonville</option>
+                </select>
+                <span asp-validation-for="EventLocation" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="MaxParticipants" class="form-label">Max Participants</label>
+                <input asp-for="MaxParticipants" class="form-control" type="number" />
+                <span asp-validation-for="MaxParticipants" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Eventstatus" class="form-label">Status</label>
+                <select asp-for="Eventstatus" class="form-select">
+                    <option value="">-- Select status --</option>
+                    <option value="Upcoming">Upcoming</option>
+                    <option value="Open">Open</option>
+                    <option value="Full">Full</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                <span asp-validation-for="Eventstatus" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn-race">Create Event</button>
+            <a asp-action="Events" class="btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

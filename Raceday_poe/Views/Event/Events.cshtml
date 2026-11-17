@@ -1,0 +1,153 @@
+﻿@model IEnumerable<Raceday_poe.Models.EventModel>
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+        .page-header h1 {
+            font-weight: 800;
+            color: #1d3557;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+    .btn-race {
+        background-color: #e63946;
+        color: #fff;
+        border: none;
+        padding: 10px 22px;
+        font-weight: 600;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: 0.25s ease;
+    }
+
+        .btn-race:hover {
+            background-color: #c1121f;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+    .event-table {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+        .event-table thead {
+            background: #1d3557;
+            color: #fff;
+        }
+
+        .event-table th {
+            padding: 14px;
+            font-weight: 600;
+        }
+
+        .event-table td {
+            padding: 12px 14px;
+            vertical-align: middle;
+        }
+
+    .badge-status {
+        background: #e63946;
+        color: #fff;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .action-links a {
+        color: #1d3557;
+        font-weight: 600;
+        text-decoration: none;
+        margin-right: 10px;
+        font-size: 0.9rem;
+    }
+
+        .action-links a:hover {
+            color: #e63946;
+        }
+
+        .action-links a.delete {
+            color: #e63946;
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #888;
+    }
+
+        .empty-state .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+</style>
+
+<div class="page-header">
+    <h1>🏁 Race Events</h1>
+    <a asp-action="CreateEvent" class="btn-race">+ Create Event</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="event-table">
+        <div class="empty-state">
+            <div class="icon">📭</div>
+            <h4>No events yet</h4>
+            <p>Click "Create Event" to add your first race event.</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="table-responsive event-table">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Max Participants</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong>@item.EventName</strong><br />
+                            <small class="text-muted">@item.Eventdescription</small>
+                        </td>
+                        <td>@item.EventDate.ToString("dd MMM yyyy")</td>
+                        <td>@item.EventLocation</td>
+                        <td>@item.MaxParticipants</td>
+                        <td><span class="badge-status">@item.Eventstatus</span></td>
+                        <td class="action-links">
+                            <a asp-action="EventDetails" asp-route-id="@item.EventId">Details</a>
+                            <a asp-action="EditEvent" asp-route-id="@item.EventId">Edit</a>
+                            <form asp-action="DeleteEventConfirmed" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@item.EventId" />
+                                <button type="submit" class="delete" style="background:none;border:none;padding:0;cursor:pointer;color:#e63946;font-weight:600;">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

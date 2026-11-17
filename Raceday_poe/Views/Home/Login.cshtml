@@ -1,0 +1,152 @@
+﻿@model Raceday_poe.Models.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .auth-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh;
+        padding: 20px;
+    }
+
+    .auth-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        width: 100%;
+        max-width: 440px;
+        padding: 40px 35px;
+        border-top: 5px solid #e63946;
+    }
+
+        .auth-card h2 {
+            text-align: center;
+            font-weight: 800;
+            color: #1d3557;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .auth-card .subtitle {
+            text-align: center;
+            color: #777;
+            font-size: 0.92rem;
+            margin-bottom: 30px;
+        }
+
+        .auth-card .form-label {
+            font-weight: 600;
+            color: #1d3557;
+            font-size: 0.9rem;
+        }
+
+        .auth-card .form-control {
+            border-radius: 8px;
+            padding: 10px 14px;
+            border: 1.5px solid #d0d7de;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .auth-card .form-control:focus {
+                border-color: #e63946;
+                box-shadow: 0 0 0 0.2rem rgba(230, 57, 70, 0.15);
+            }
+
+    .btn-auth {
+        background-color: #e63946;
+        color: #fff;
+        font-weight: 700;
+        border: none;
+        border-radius: 8px;
+        padding: 11px;
+        width: 100%;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: background-color 0.25s ease, transform 0.2s ease;
+        margin-top: 10px;
+    }
+
+        .btn-auth:hover {
+            background-color: #c1121f;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+    .auth-switch {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+        .auth-switch a {
+            color: #e63946;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+            .auth-switch a:hover {
+                text-decoration: underline;
+            }
+
+    .remember-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        font-size: 0.88rem;
+    }
+</style>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <h2>🏁 Welcome Back</h2>
+        <p class="subtitle">Login to your Raceday account</p>
+
+        <form asp-controller="Home" asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert alert-danger">@ViewBag.Message</div>
+            }
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="you@example.com" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="passwordHashed" class="form-label"></label>
+                <input asp-for="passwordHashed" type="password" class="form-control" placeholder="Enter your password" />
+                <span asp-validation-for="passwordHashed" class="text-danger small"></span>
+            </div>
+
+            <div class="remember-row">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe" />
+                    <label asp-for="passwordHashed" class="form-check-label">Remember me</label>
+                </div>
+                <a asp-controller="Account" asp-action="ForgotPassword" style="color:#e63946; font-weight:600;">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn-auth">Login</button>
+        </form>
+
+        <div class="auth-switch">
+            Don't have an account? <a asp-controller="Home" asp-action="RegisterUser">Register here</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

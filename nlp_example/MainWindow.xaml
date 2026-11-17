@@ -1,0 +1,52 @@
+﻿<Window x:Class="nlp_example.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:nlp_example"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid><!--start of parent grid-->
+        
+        <!---Grid for checking if ai is getting trained-->
+        
+        <Grid
+            x:Name="chats_grid"
+            Visibility="Visible"
+            >  <!--start of ai grid-->
+
+            
+            <!--textbox to take user input-->
+            <TextBox
+                x:Name="emotions"
+                Height="50"
+                Width="300"
+                Margin="0,0,0,200"
+                />
+
+            <!--buttton to submit user input-->
+            <Button
+                Height="40"
+                Width="350"
+                Margin="0,0,0,0"
+                Content="train Ai"
+                Click="training_ai"
+                />
+
+            <!--ttextblock to show how the user is training the ai-->
+            <TextBlock
+                Height="100"
+                Width="300"
+                Margin="0,300,0,0"
+                x:Name="show_emotions_detected"
+                Text="waiting for the results"
+                />
+
+
+
+        </Grid> <!--end of chatsgrid-->
+         
+        
+        
+    </Grid><!--end of parent grid-->
+</Window>

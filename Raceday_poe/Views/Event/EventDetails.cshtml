@@ -1,0 +1,98 @@
+﻿@model Raceday_poe.Models.EventModel
+
+@{
+    ViewData["Title"] = "Event Details";
+}
+
+<style>
+    .details-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        padding: 35px;
+        max-width: 750px;
+        margin: 0 auto;
+        border-top: 5px solid #e63946;
+    }
+
+        .details-card h2 {
+            font-weight: 800;
+            color: #1d3557;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        .details-card dt {
+            color: #1d3557;
+            font-weight: 700;
+        }
+
+        .details-card dd {
+            color: #444;
+            margin-bottom: 12px;
+        }
+
+    .btn-race {
+        background: #e63946;
+        color: #fff;
+        font-weight: 700;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 22px;
+        text-decoration: none;
+    }
+
+        .btn-race:hover {
+            background: #c1121f;
+            color: #fff;
+        }
+
+    .btn-edit {
+        background: #1d3557;
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 22px;
+        border-radius: 8px;
+        font-weight: 700;
+    }
+
+        .btn-edit:hover {
+            background: #142a45;
+            color: #fff;
+        }
+</style>
+
+<div class="details-card">
+    <h2>@Model.EventName</h2>
+    <dl class="row">
+        <dt class="col-sm-4">Description</dt>
+        <dd class="col-sm-8">@Model.Eventdescription</dd>
+
+        <dt class="col-sm-4">Date</dt>
+        <dd class="col-sm-8">@Model.EventDate.ToString("dd MMMM yyyy")</dd>
+
+        <dt class="col-sm-4">Location</dt>
+        <dd class="col-sm-8">@Model.EventLocation</dd>
+
+        <dt class="col-sm-4">Max Participants</dt>
+        <dd class="col-sm-8">@Model.MaxParticipants</dd>
+
+        <dt class="col-sm-4">Status</dt>
+        <dd class="col-sm-8">@Model.Eventstatus</dd>
+
+        <dt class="col-sm-4">Category ID</dt>
+        <dd class="col-sm-8">@Model.Category_id</dd>
+
+        <dt class="col-sm-4">Organiser ID</dt>
+        <dd class="col-sm-8">@Model.Organiser_id</dd>
+
+        <dt class="col-sm-4">Created At</dt>
+        <dd class="col-sm-8">@Model.createdAt</dd>
+    </dl>
+
+    <div class="mt-4">
+        <a asp-action="EditEvent" asp-route-id="@Model.EventId" class="btn-edit">Edit</a>
+        <a asp-action="Events" class="btn-race" style="margin-left:10px;">Back to List</a>
+    </div>
+</div>

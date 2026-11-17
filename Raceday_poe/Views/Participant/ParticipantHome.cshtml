@@ -1,0 +1,159 @@
+@model IEnumerable<Raceday_poe.Models.EventModel>
+
+@{
+    ViewData["Title"] = "Upcoming Events";
+}
+
+<style>
+    .page-title {
+        font-weight: 800;
+        color: #1d3557;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+    }
+
+    .filter-bar {
+        background: #fff;
+        border-radius: 12px;
+        padding: 18px 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+        margin-bottom: 25px;
+    }
+
+    .btn-filter {
+        background: #1d3557;
+        color: #fff;
+        border: none;
+        padding: 9px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .btn-filter:hover { background: #142a45; }
+
+    .btn-clear {
+        background: transparent;
+        color: #666;
+        border: 1.5px solid #ccc;
+        padding: 9px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .btn-clear:hover { border-color: #e63946; color: #e63946; }
+
+    .event-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
+        border-top: 4px solid #1d3557;
+    }
+
+    .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.13);
+    }
+
+    .event-card .card-body {
+        padding: 20px;
+    }
+
+    .event-card h5 {
+        font-weight: 800;
+        color: #1d3557;
+        margin-bottom: 10px;
+    }
+
+    .event-card .meta {
+        font-size: 0.88rem;
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .btn-enrol {
+        background: #e63946;
+        color: #fff;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 20px;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: inline-block;
+        margin-top: 12px;
+        transition: 0.2s ease;
+    }
+
+    .btn-enrol:hover { background: #c1121f; color: #fff; }
+
+    .badge-status {
+        padding: 3px 10px;
+        border-radius: 10px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 8px;
+    }
+
+    .badge-upcoming { background: #d4edda; color: #155724; }
+    .badge-open { background: #cce5ff; color: #004085; }
+    .badge-full { background: #fff3cd; color: #856404; }
+    .badge-completed { background: #e2e3e5; color: #383d41; }
+    .badge-cancelled { background: #f8d7da; color: #721c24; }
+</style>
+
+<h1 class="page-title">🏁 Upcoming Race Events</h1>
+
+<div class="filter-bar">
+    <form method="get" asp-action="ParticipantHome" class="row g-2 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label fw-semibold" style="font-size:0.88rem;color:#1d3557;">Search</label>
+            <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Event name or location..." />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold" style="font-size:0.88rem;color:#1d3557;">Status</label>
+            <select name="status" class="form-select">
+                <option value="">All Statuses</option>
+                <option value="Upcoming" (ViewBag.Status == "Upcoming" ? "selected" : "")>Upcoming</option>
+                <option value="Open" (ViewBag.Status == "Open" ? "selected" : "")>Open</option>
+                <option value="Full" (ViewBag.Status == "Full" ? "selected" : "")>Full</option>
+            </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn-filter">Filter</button>
+            <a asp-action="ParticipantHome" class="btn-clear">Clear</a>
+        </div>
+    </form>
+</div>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">No events match your search.</p>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <div class="event-card">
+                    <div class="card-body">
+                        <span class="badge-status badge-@item.Eventstatus.ToLower()">@item.Eventstatus</span>
+                        <h5>@item.EventName</h5>
+                        <p class="meta">📅 @item.EventDate.ToString("dd MMM yyyy")</p>
+                        <p class="meta">📍 @item.EventLocation</p>
+                        <p class="meta">👥 Max: @item.MaxParticipants participants</p>
+                        <p style="color:#555;font-size:0.88rem;">@item.Eventdescription</p>
+                        <a asp-action="EventDetail" asp-route-id="@item.EventId" class="btn-enrol">View & Enrol</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,97 @@
+﻿<Window x:Class="task_demo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:task_demo"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Background="DarkOliveGreen">
+    <Grid><!--start of parent grid-->
+          
+        <!--we have
+        1:list view - list all chats
+        1:button - send or submit the user question
+        3:text box - user input for question
+        -collects what the user enters
+        -->
+        
+        <!--task adding and viewing grid-->
+        <Grid 
+            x:Name="task_grid"
+            Visibility="Visible"
+            ><!--start of tasks_grid-->
+
+            <ListView
+                Height="300"
+                Width="700"
+                Margin="0,0,0,110"
+                x:Name="tasks"
+                />
+
+            <TextBox
+                Height="50"
+                Width="250"
+                Margin="0,300,350,0"
+                x:Name="question_box"
+                />
+
+            <Button
+                Height="40"
+                Width="250"
+                Margin="250,300,0,0"
+                Content="Submit Task"
+                Click="Submit_task"
+                />
+            
+            <!--Button to view task-->
+            <Button
+              Height="40"
+              Width="100"
+              Content="view task" 
+              Margin="650,300,0,0"  
+              Click="view_alltasks"
+                />
+
+
+        </Grid><!--end of task and viewing-->
+        
+        
+        
+
+        <!--task adding and viewing grid-->
+        <Grid
+                Visibility="Hidden"
+                x:Name="viewtasks_grid"
+                >
+            <!--start of task adding -->
+
+
+
+
+            <ListView
+                  x:Name="view_taskgrid"
+                  Height="350" 
+                  Width="750" 
+                
+                  Margin="0,0,0,70"
+                
+                
+                  MouseDoubleClick="Manage_task"
+                />
+
+
+            <Button
+                Height="40"
+                Width="250"
+                Margin="0,350,0,0"
+                Content="Back to chats"
+                Click="Back_to_chats"
+                />
+
+        </Grid><!--end of task adding and viewing grid-->
+
+
+
+
+    </Grid>
+</Window>

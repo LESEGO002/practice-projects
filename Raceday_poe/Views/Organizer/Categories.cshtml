@@ -1,0 +1,93 @@
+@model IEnumerable<Raceday_poe.Models.CategoryModel>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .page-header h1 {
+        font-weight: 800;
+        color: #1d3557;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+    .btn-race {
+        background-color: #e63946;
+        color: #fff;
+        border: none;
+        padding: 10px 22px;
+        font-weight: 600;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: 0.25s ease;
+    }
+
+    .btn-race:hover {
+        background-color: #c1121f;
+        color: #fff;
+    }
+
+    .cat-table {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .cat-table thead {
+        background: #1d3557;
+        color: #fff;
+    }
+
+    .cat-table th, .cat-table td {
+        padding: 13px 16px;
+        vertical-align: middle;
+    }
+</style>
+
+<div class="page-header">
+    <h1>📋 Categories</h1>
+    <a asp-action="CreateCategory" class="btn-race">+ Add Category</a>
+</div>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">No categories found. Add one to get started.</p>
+}
+else
+{
+    <div class="table-responsive cat-table">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Category Name</th>
+                    <th>Min Age</th>
+                    <th>Max Age</th>
+                    <th>Discription</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.catergoryId</td>
+                        <td><strong>@item.categoryName</strong></td>
+                        <td>@item.minAge</td>
+                        <td>@item.maxAge</td>
+                        <td>@item.categoryDescrition</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

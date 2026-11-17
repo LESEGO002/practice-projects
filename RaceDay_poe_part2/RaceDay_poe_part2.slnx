@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="../Raceday_poe/Raceday_poe.csproj" Id="bc8f71f5-139c-4bbe-9794-e82ff74441ac" />
+  <Project Path="../Raceday_tests2/Raceday_tests2.csproj" Id="29a03c1a-0f5d-4dc7-8c19-bcd34c8c291c" />
+  <Project Path="RaceDay_poe_part2.csproj" />
+</Solution>

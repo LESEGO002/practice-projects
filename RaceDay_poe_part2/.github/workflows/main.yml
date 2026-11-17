@@ -1,0 +1,138 @@
+# Save this file in your repo as:  .github/workflows/ci-cd.yml
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  # TODO: change these three to match your repo
+  DOTNET_VERSION: '8.0.x'                                          # same as <TargetFramework> in your csproj (net8.0 -> 8.0.x)
+  SOLUTION: 'RaceDay_poe_part2.sln'                                # path to your .sln file
+  API_PROJECT: 'RaceDay_poe_part2/RaceDay_poe_part2.csproj'        # path to the API .csproj
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  #------------------------------------------------------------
+  # 1. build + run the xunit tests
+  #    windows runner because the tests use (localdb)\raceday_api
+  #------------------------------------------------------------
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: nuget-${{ runner.os }}-
+
+      - name: Restore
+        run: dotnet restore ${{ env.SOLUTION }}
+
+      - name: Build
+        run: dotnet build ${{ env.SOLUTION }} --configuration Release --no-restore
+
+      #-- database for the tests (same instance + database name the tests use) --
+      - name: Start LocalDB instance
+        shell: pwsh
+        run: |
+          if (-not (Get-Command sqllocaldb -ErrorAction SilentlyContinue)) {
+            Write-Error "sqllocaldb was not found on this runner. Add a step that installs LocalDB (for example the potatoqualitee/mssqlsuite action with 'install: localdb') before this one."
+            exit 1
+          }
+          sqllocaldb create raceday_api
+          sqllocaldb start raceday_api
+          sqllocaldb info raceday_api
+
+      - name: Create database and tables
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "database/schema.sql")) {
+            Write-Error "database/schema.sql is missing. Export your schema from SSMS (right-click racedaydb > Tasks > Generate Scripts, schema only) and commit it to database/schema.sql."
+            exit 1
+          }
+          sqlcmd -S "(localdb)\raceday_api" -E -C -b -Q "IF DB_ID('racedaydb') IS NULL CREATE DATABASE racedaydb"
+          sqlcmd -S "(localdb)\raceday_api" -E -C -b -d racedaydb -i "database/schema.sql"
+
+      - name: Test
+        run: >
+          dotnet test ${{ env.SOLUTION }}
+          --configuration Release
+          --no-build
+          --logger "trx;LogFileName=test-results.trx"
+          --results-directory TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/*.trx
+
+  #------------------------------------------------------------
+  # 2. publish the API (only on pushes to main, after tests pass)
+  #------------------------------------------------------------
+  publish:
+    needs: build-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Publish
+        run: dotnet publish ${{ env.API_PROJECT }} --configuration Release --output ./publish
+
+      - name: Upload publish artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-publish
+          path: ./publish
+
+  #------------------------------------------------------------
+  # 3. deploy to Azure App Service (optional)
+  #    only runs once you add the repo variable AZURE_WEBAPP_NAME
+  #    and the repo secret AZURE_WEBAPP_PUBLISH_PROFILE
+  #------------------------------------------------------------
+  deploy:
+    needs: publish
+    if: vars.AZURE_WEBAPP_NAME != ''
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Download publish artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: api-publish
+          path: ./publish
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish

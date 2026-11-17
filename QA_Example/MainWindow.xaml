@@ -1,0 +1,51 @@
+﻿<Window x:Class="QA_Example.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QA_Example"
+        mc:Ignorable="d"
+        Title="Questions and Answers App " Height="450" Width="800">
+    <Grid Background="#FF0F0920">
+        <!--Start of Parent-->
+
+        <!--textblock to ask user to enter question-->
+        <TextBlock 
+            Text="Please enter your Question Here:"
+            FontFamily="Arial"
+            FontWeight="Bold"
+            FontSize="20"
+            Margin="20,10,0,350"
+            HorizontalAlignment="Left" Foreground="#FFEBE5E5" Width="380"
+            
+        />
+
+        <!--TextBox for user to enter question-->
+        <TextBox Background="AntiqueWhite"
+            Text="please enter your Question here"
+            Margin="20,50,317,340"
+            
+            
+        />
+        <!--end of textBox-->
+
+        <Button Background="AliceBlue"
+            Content="Answer"
+            Width="100"
+            Margin="35,100,665,283"
+            x:Name="btnAnser"
+            Click ="btnAnser_Click"
+            
+            
+        />
+        <Button Background="AliceBlue"
+            Content="clear"
+            Width="100"
+            Margin="154,100,546,283" Foreground="#FF121212"
+            x:Name="btnClear"
+            Click ="btnClear_Click"
+            
+        />
+    </Grid>
+    <!--End of Parent-->
+</Window>

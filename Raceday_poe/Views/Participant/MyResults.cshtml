@@ -1,0 +1,84 @@
+@model IEnumerable<Raceday_poe.Models.ResultModel>
+
+@{
+    ViewData["Title"] = "My Results";
+}
+
+<style>
+    .page-title {
+        font-weight: 800;
+        color: #1d3557;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 25px;
+    }
+
+    .results-table {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .results-table thead {
+        background: #1d3557;
+        color: #fff;
+    }
+
+    .results-table th, .results-table td {
+        padding: 13px 16px;
+        vertical-align: middle;
+    }
+
+    .position-badge {
+        background: #e63946;
+        color: #fff;
+        padding: 5px 14px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 0.88rem;
+    }
+</style>
+
+<h1 class="page-title">🏆 My Race Results</h1>
+
+@if (!Model.Any())
+{
+    <div style="text-align:center;padding:60px 20px;color:#888;">
+        <div style="font-size:3rem;margin-bottom:15px;">🏅</div>
+        <h4>No results yet</h4>
+        <p>Results will appear here once your race times are captured.</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive results-table">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Finish Time</th>
+                    <th>Status</th>
+                    <th>Position</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><strong>@item.finishTime</strong></td>
+                        <td>@item.ResultStatus</td>
+                        <td><span class="position-badge">@item.position</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@functions {
+    string GetOrdinal(int n)
+    {
+        if (n % 100 >= 11 && n % 100 <= 13) return "th";
+        return (n % 10) switch { 1 => "st", 2 => "nd", 3 => "rd", _ => "th" };
+    }
+}

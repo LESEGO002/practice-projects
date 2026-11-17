@@ -1,0 +1,276 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Raceday</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Final_Raceday_poe.styles.css" asp-append-version="true" />
+
+    <style>
+            html, body {
+                height: 100%;
+            }
+
+            body {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f8f9fa;
+            }
+
+            /* Navbar */
+            .race-navbar {
+                background-color: #1d3557;
+                padding: 15px 0;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            }
+
+                .race-navbar .navbar-brand {
+                    font-size: 1.6rem;
+                    font-weight: 800;
+                    color: #fff !important;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                }
+
+                    .race-navbar .navbar-brand span {
+                        color: #e63946;
+                    }
+
+                .race-navbar .nav-link {
+                    color: #dbe4ee !important;
+                    font-weight: 500;
+                    margin: 0 8px;
+                    transition: color 0.25s ease;
+                    position: relative;
+                }
+
+                    .race-navbar .nav-link:hover {
+                        color: #fff !important;
+                    }
+
+                    .race-navbar .nav-link::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 50%;
+                        width: 0;
+                        height: 2px;
+                        background-color: #e63946;
+                        transition: all 0.3s ease;
+                        transform: translateX(-50%);
+                    }
+
+                    .race-navbar .nav-link:hover::after {
+                        width: 80%;
+                    }
+
+            .btn-nav-login {
+                background-color: transparent;
+                color: #fff !important;
+                border: 1.5px solid #fff;
+                border-radius: 25px;
+                padding: 6px 20px !important;
+                margin-left: 10px;
+                transition: all 0.25s ease;
+            }
+
+                .btn-nav-login:hover {
+                    background-color: #fff;
+                    color: #1d3557 !important;
+                }
+
+            .btn-nav-register {
+                background-color: #e63946;
+                color: #fff !important;
+                border: 1.5px solid #e63946;
+                border-radius: 25px;
+                padding: 6px 20px !important;
+                margin-left: 5px;
+                transition: all 0.25s ease;
+            }
+
+                .btn-nav-register:hover {
+                    background-color: #c1121f;
+                    border-color: #c1121f;
+                }
+
+            /* Main content */
+            main {
+                flex: 1 0 auto;
+                padding: 30px 0;
+            }
+
+            /* Footer */
+            .race-footer {
+                background-color: #1d3557;
+                color: #dbe4ee;
+                padding: 30px 0 15px 0;
+                margin-top: auto;
+            }
+
+                .race-footer h5 {
+                    color: #fff;
+                    font-weight: 700;
+                    margin-bottom: 15px;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    font-size: 1rem;
+                }
+
+                .race-footer a {
+                    color: #a8b8cc;
+                    text-decoration: none;
+                    display: block;
+                    margin-bottom: 8px;
+                    transition: color 0.25s ease;
+                    font-size: 0.92rem;
+                }
+
+                    .race-footer a:hover {
+                        color: #e63946;
+                    }
+
+                .race-footer .footer-brand {
+                    font-size: 1.4rem;
+                    font-weight: 800;
+                    color: #fff;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                }
+
+                    .race-footer .footer-brand span {
+                        color: #e63946;
+                    }
+
+                .race-footer hr {
+                    border-color: #415a77;
+                    margin: 20px 0 15px 0;
+                }
+
+            .footer-bottom {
+                color: #a8b8cc;
+                font-size: 0.85rem;
+                text-align: center;
+            }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg race-navbar">
+            <div class="container">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    🏁 Race<span>day</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation"
+                        style="border-color: #fff;">
+                    <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+
+                        @if (Context.Session.GetString("Role") == "Organizer")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Organizer" asp-action="Dashboard">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Event" asp-action="Events">Events</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Organizer" asp-action="Categories">Categories</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Organizer" asp-action="Enrollments">Enrollments</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Organizer" asp-action="Results">Results</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn-nav-login" asp-controller="Home" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else if (Context.Session.GetString("Role") == "Participant")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Participant" asp-action="ParticipantHome">Events</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Participant" asp-action="MyEnrollments">My Enrollments</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Participant" asp-action="MyResults">My Results</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Participant" asp-action="Profile">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn-nav-login" asp-controller="Home" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link btn-nav-login" asp-controller="Home" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn-nav-register" asp-controller="Home" asp-action="RegisterUser">Register</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="race-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="footer-brand">🏁 Race<span>day</span></div>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">
+                        The ultimate platform for race events,and live results.
+                    </p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <a asp-controller="Home" asp-action="Index">Home</a>
+                    <a asp-controller="Event" asp-action="Events">View Events</a>
+                    <a asp-controller="Event" asp-action="EventDetails">View Event Details</a>
+                    <a asp-controller="Organizer" asp-action="Results">View Results</a>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Account</h5>
+                    <a asp-controller="Home" asp-action="Login">Login</a>
+                    <a asp-controller="Home" asp-action="RegisterUser">Create Account</a>
+                    <a asp-controller="Home" asp-action="ForgotPassword">Forgot Password</a>
+                </div>
+            </div>
+            <hr />
+            <div class="footer-bottom">
+                &copy; @DateTime.Now.Year - Raceday System. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

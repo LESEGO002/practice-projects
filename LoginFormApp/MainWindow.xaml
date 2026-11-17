@@ -1,0 +1,72 @@
+﻿<Window x:Class="LoginFormApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LoginFormApp"
+        mc:Ignorable="d"
+        Title="Login Form App" Height="450" Width="800">
+    <Grid>
+        <!--Start of Parent-->
+
+        <Grid>
+        <!--Login textblock-->
+        <TextBlock
+            Text="Login Form"
+            FontFamily="Arial"
+            FontSize="20"
+            FontWeight="Bold"
+            HorizontalAlignment="Center"
+        />
+
+        <TextBlock
+         Text="UserName :"
+         FontFamily="Arial"
+         FontSize="20"
+         FontWeight="Bold"
+         HorizontalAlignment="Left"
+         Margin="100,100,0,0"
+        />
+
+
+        <TextBox
+          Width="428"
+          HorizontalAlignment="Left"
+          Margin="237,100,0,292"
+          Height="50"
+          
+        />
+
+        <TextBlock
+         Text="Password :"
+         FontFamily="Arial"
+         FontSize="20"
+         FontWeight="Bold"
+         HorizontalAlignment="Left"
+         Margin="104,175,0,25"
+        />
+
+
+         <TextBox
+          Width="428"
+          HorizontalAlignment="Left"
+          Margin="237,175,0,217"
+          Height="50"
+  
+        />
+        </Grid>
+
+        <Button
+         Content="Login"
+         Width="200"
+         Height="40"
+         HorizontalAlignment="Center"
+         Margin="100,200,0,100"
+         x:Name="Login_Button"
+         Click ="Click_LoginButton"
+        />
+            
+
+    </Grid><!--End of parent-->
+    
+</Window>

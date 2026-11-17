@@ -1,0 +1,111 @@
+@model Raceday_poe.Models.CategoryModel
+
+@{
+    ViewData["Title"] = "Add Category";
+}
+
+<style>
+    .form-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        padding: 35px;
+        max-width: 700px;
+        margin: 0 auto;
+        border-top: 5px solid #e63946;
+    }
+
+    .form-card h2 {
+        font-weight: 800;
+        color: #1d3557;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 25px;
+    }
+
+    .form-card .form-label {
+        font-weight: 600;
+        color: #1d3557;
+        font-size: 0.9rem;
+    }
+
+    .form-card .form-control {
+        border-radius: 8px;
+        padding: 10px 14px;
+        border: 1.5px solid #d0d7de;
+    }
+
+    .form-card .form-control:focus {
+        border-color: #e63946;
+        box-shadow: 0 0 0 0.2rem rgba(230,57,70,0.15);
+    }
+
+    .btn-race {
+        background: #e63946;
+        color: #fff;
+        font-weight: 700;
+        border: none;
+        border-radius: 8px;
+        padding: 11px 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-race:hover { background: #c1121f; color: #fff; }
+
+    .btn-cancel {
+        color: #555;
+        text-decoration: none;
+        margin-left: 15px;
+        font-weight: 600;
+    }
+
+    .btn-cancel:hover { color: #e63946; }
+</style>
+
+<div class="form-card">
+    <h2>Add Category</h2>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Message</div>
+    }
+
+    <form asp-action="CreateCategory" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="categoryName" class="form-label">Category Name</label>
+            <input asp-for="categoryName" class="form-control" placeholder="e.g. Under 20 - 5km" />
+            <span asp-validation-for="categoryName" class="text-danger small"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="minAge" class="form-label">Min Age</label>
+                <input asp-for="minAge" class="form-control" type="number" />
+                <span asp-validation-for="minAge" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="maxAge" class="form-label">Max Age</label>
+                <input asp-for="maxAge" class="form-control" type="number" />
+                <span asp-validation-for="maxAge" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="categoryDescrition" class="form-label">Description</label>
+            <input asp-for="categoryDescrition" class="form-control" placeholder="e.g. Open to all ages, 5km circuit" />
+            <span asp-validation-for="categoryDescrition" class="text-danger small"></span>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn-race">Save Category</button>
+            <a asp-action="Categories" class="btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

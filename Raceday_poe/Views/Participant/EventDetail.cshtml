@@ -1,0 +1,134 @@
+@model Raceday_poe.Models.EventModel
+
+@{
+    ViewData["Title"] = "Event Details";
+}
+
+<style>
+    .detail-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        padding: 35px;
+        max-width: 800px;
+        margin: 0 auto;
+        border-top: 5px solid #e63946;
+    }
+
+    .detail-card h2 {
+        font-weight: 800;
+        color: #1d3557;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+    }
+
+    .detail-card dt { color: #1d3557; font-weight: 700; }
+    .detail-card dd { color: #444; margin-bottom: 12px; }
+
+    .enrol-section {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 25px;
+        margin-top: 30px;
+        border-left: 4px solid #e63946;
+    }
+
+    .enrol-section h4 {
+        font-weight: 700;
+        color: #1d3557;
+        margin-bottom: 15px;
+    }
+
+    .btn-enrol {
+        background: #e63946;
+        color: #fff;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+    }
+
+    .btn-enrol:hover { background: #c1121f; }
+
+    .btn-back {
+        background: transparent;
+        color: #1d3557;
+        border: 2px solid #1d3557;
+        padding: 9px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px;
+        transition: 0.2s ease;
+    }
+
+    .btn-back:hover { background: #1d3557; color: #fff; }
+</style>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-warning mb-3">@TempData["Message"]</div>
+}
+
+<div class="detail-card">
+    <h2>@Model.EventName</h2>
+
+    <dl class="row">
+        <dt class="col-sm-4">Description</dt>
+        <dd class="col-sm-8">@Model.Eventdescription</dd>
+
+        <dt class="col-sm-4">Date</dt>
+        <dd class="col-sm-8">@Model.EventDate.ToString("dd MMMM yyyy")</dd>
+
+        <dt class="col-sm-4">Location</dt>
+        <dd class="col-sm-8">@Model.EventLocation</dd>
+
+        <dt class="col-sm-4">Max Participants</dt>
+        <dd class="col-sm-8">@Model.MaxParticipants</dd>
+
+        <dt class="col-sm-4">Status</dt>
+        <dd class="col-sm-8">@Model.Eventstatus</dd>
+    </dl>
+
+    <div class="enrol-section">
+        <h4>Enrol for this Event</h4>
+
+        @{
+            var categories = ViewBag.Categories as List<Raceday_poe.Models.CategoryModel>;
+        }
+
+        @if (categories == null || !categories.Any())
+        {
+            <p class="text-muted">No categories available for this event.</p>
+        }
+        else
+        {
+            <form asp-action="Enrol" method="post">
+                <input type="hidden" name="eventId" value="@Model.EventId" />
+                <input type="hidden" name="eventName" value="@Model.EventName" />
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" style="color:#1d3557;">Bib Number</label>
+                    <input type="number" name="BibNumber" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" style="color:#1d3557;">Select Category</label>
+                    <select name="categoryId" class="form-select">
+                        <option value="">-- Choose a category --</option>
+                        @foreach (var cat in categories)
+                        {
+                            <option value="@cat.catergoryId">@cat.categoryName (Age @cat.minAge–@cat.maxAge | @cat.categoryDescrition)</option>
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn-enrol">Enrol Now</button>
+            </form>
+        }
+    </div>
+
+    <a asp-action="ParticipantHome" class="btn-back">← Back to Events</a>
+</div>

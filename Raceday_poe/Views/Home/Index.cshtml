@@ -1,0 +1,184 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('https://images.unsplash.com/photo-1552667466-07770ae110d0?auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        color: #fff;
+        padding: 120px 20px;
+        text-align: center;
+        border-radius: 12px;
+        margin-bottom: 40px;
+    }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero-section p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 35px auto;
+            color: #f1f1f1;
+        }
+
+    .btn-race {
+        background-color: #e63946;
+        color: #fff;
+        border: none;
+        padding: 12px 32px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin: 0 8px;
+    }
+
+        .btn-race:hover {
+            background-color: #c1121f;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.4);
+        }
+
+    .btn-race-outline {
+        background-color: transparent;
+        color: #fff;
+        border: 2px solid #fff;
+        padding: 10px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin: 0 8px;
+    }
+
+        .btn-race-outline:hover {
+            background-color: #fff;
+            color: #000;
+            transform: translateY(-3px);
+        }
+
+    .feature-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px 20px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
+        border-top: 4px solid #e63946;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h4 {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1d3557;
+        }
+
+        .feature-card p {
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+    .cta-banner {
+        background: #1d3557;
+        color: #fff;
+        padding: 50px 30px;
+        border-radius: 12px;
+        text-align: center;
+        margin-top: 50px;
+    }
+
+        .cta-banner h2 {
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-banner p {
+            color: #dbe4ee;
+            margin-bottom: 25px;
+        }
+
+    @@media (max-width: 768px) {
+        .hero-section h1 {
+            font-size: 2.2rem;
+        }
+
+        .btn-race, .btn-race-outline {
+            display: block;
+            margin: 10px auto;
+            width: 80%;
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <h1>Welcome to Raceday</h1>
+    <p>Experience the thrill of the track. Book your races, manage your events, and join the ultimate racing community.</p>
+    <div>
+        <a asp-controller="Home" asp-action="Login" class="btn-race">Login</a>
+        <a asp-controller="Home" asp-action="RegisterUser" class="btn-race-outline">Register</a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="feature-card">
+            <div class="icon">🏁</div>
+            <h4>Book Races</h4>
+            <p>Reserve your spot in upcoming race events with just a few clicks.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="feature-card">
+            <div class="icon">🐎</div>
+            <h4>Manage Entries</h4>
+            <p>Track your horses, jockeys, and race entries all in one place.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="feature-card">
+            <div class="icon">🏆</div>
+            <h4>Live Results</h4>
+            <p>Stay updated with real-time race results, standings, and winners.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Call To Action Banner -->
+<div class="cta-banner">
+    <h2>Ready to Join the Race?</h2>
+    <p>Create an account today and get access to exclusive race events and features.</p>
+    <a asp-controller="Home" asp-action="RegisterUser" class="btn-race">Get Started</a>
+</div>

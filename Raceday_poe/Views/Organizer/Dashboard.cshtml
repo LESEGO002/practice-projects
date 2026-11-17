@@ -1,0 +1,183 @@
+@model IEnumerable<Raceday_poe.Models.EventModel>
+
+@{
+    ViewData["Title"] = "Organiser Dashboard";
+}
+
+<style>
+    .dash-heading {
+        font-weight: 800;
+        color: #1d3557;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        border-top: 4px solid #e63946;
+    }
+
+    .stat-card .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #1d3557;
+    }
+
+    .stat-card .stat-label {
+        color: #666;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .section-title {
+        font-weight: 700;
+        color: #1d3557;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 30px 0 15px 0;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #e63946;
+    }
+
+    .upcoming-table {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .upcoming-table thead {
+        background: #1d3557;
+        color: #fff;
+    }
+
+    .upcoming-table th, .upcoming-table td {
+        padding: 12px 16px;
+    }
+
+    .btn-dash {
+        background: #e63946;
+        color: #fff;
+        border: none;
+        padding: 9px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: 0.2s ease;
+    }
+
+    .btn-dash:hover {
+        background: #c1121f;
+        color: #fff;
+    }
+
+    .btn-dash-outline {
+        background: transparent;
+        color: #1d3557;
+        border: 2px solid #1d3557;
+        padding: 9px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: 0.2s ease;
+    }
+
+    .btn-dash-outline:hover {
+        background: #1d3557;
+        color: #fff;
+    }
+
+    .badge-status {
+        padding: 4px 10px;
+        border-radius: 10px;
+        font-size: 0.78rem;
+        font-weight: 600;
+    }
+
+    .badge-upcoming { background: #d4edda; color: #155724; }
+    .badge-open { background: #cce5ff; color: #004085; }
+    .badge-full { background: #fff3cd; color: #856404; }
+    .badge-completed { background: #e2e3e5; color: #383d41; }
+    .badge-cancelled { background: #f8d7da; color: #721c24; }
+</style>
+
+<h1 class="dash-heading">🏁 Organiser Dashboard</h1>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-number">@ViewBag.TotalEvents</div>
+            <div class="stat-label">Total Events</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-number">@ViewBag.TotalEnrollments</div>
+            <div class="stat-label">Total Enrollments</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-number">@(((IEnumerable<Raceday_poe.Models.EventModel>)ViewBag.UpcomingEvents).Count())</div>
+            <div class="stat-label">Upcoming Events</div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex gap-2 mb-4">
+    <a asp-controller="Event" asp-action="CreateEvent" class="btn-dash">+ Create Event</a>
+    <a asp-controller="Organizer" asp-action="CreateCategory" class="btn-dash-outline">+ Add Category</a>
+    <a asp-controller="Organizer" asp-action="CaptureResult" class="btn-dash-outline">+ Capture Result</a>
+</div>
+
+<div class="section-title">Upcoming Events</div>
+
+@{
+    var upcoming = (IEnumerable<Raceday_poe.Models.EventModel>)ViewBag.UpcomingEvents;
+}
+
+@if (!upcoming.Any())
+{
+    <p class="text-muted">No upcoming events found.</p>
+}
+else
+{
+    <div class="table-responsive upcoming-table">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Event Name</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in upcoming)
+                {
+                    <tr>
+                        <td><strong>@item.EventName</strong></td>
+                        <td>@item.EventDate.ToString("dd MMM yyyy")</td>
+                        <td>@item.EventLocation</td>
+                        <td>
+                            <span class="badge-status badge-@item.Eventstatus.ToLower()">@item.Eventstatus</span>
+                        </td>
+                        <td>
+                            <a asp-controller="Event" asp-action="EventDetails" asp-route-id="@item.EventId" class="btn-dash" style="padding:5px 12px;font-size:0.8rem;">View</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

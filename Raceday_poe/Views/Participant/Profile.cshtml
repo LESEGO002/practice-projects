@@ -1,0 +1,115 @@
+@model Raceday_poe.Models.UserProfileModel
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<style>
+    .profile-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        padding: 35px;
+        max-width: 600px;
+        margin: 0 auto;
+        border-top: 5px solid #1d3557;
+    }
+
+    .profile-card h2 {
+        font-weight: 800;
+        color: #1d3557;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 25px;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #1d3557;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: #fff;
+        margin: 0 auto 20px auto;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #1d3557;
+        font-size: 0.9rem;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 10px 14px;
+        border: 1.5px solid #d0d7de;
+    }
+
+    .form-control:focus {
+        border-color: #1d3557;
+        box-shadow: 0 0 0 0.2rem rgba(29,53,87,0.15);
+    }
+
+    .btn-save {
+        background: #1d3557;
+        color: #fff;
+        font-weight: 700;
+        border: none;
+        border-radius: 8px;
+        padding: 11px 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .btn-save:hover { background: #142a45; color: #fff; }
+</style>
+
+<div class="profile-card">
+    <div class="profile-avatar">👤</div>
+    <h2 style="text-align:center;">My Profile</h2>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert @(ViewBag.Message.ToString().Contains("successfully") ? "alert-success" : "alert-danger")">
+            @ViewBag.Message
+        </div>
+    }
+
+    <form asp-action="Profile" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="FirstName" class="form-label">First Name</label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="LastName" class="form-label">Last Name</label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="age" class="form-label">Age</label>
+            <input asp-for="age" class="form-control" type="number" />
+            <span asp-validation-for="age" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" readonly style="background:#f8f9fa;" />
+        </div>
+
+        <button type="submit" class="btn-save">Save Changes</button>
+    </form>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
